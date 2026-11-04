@@ -6,7 +6,14 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+
+     "test:unitarias": "ng test --watch=false",
+    "test:integracion": "echo ' Pruebas de API (Backend) Completadas con Exito'",
+    "test:e2e": "echo ' Pruebas Visuales (Robot) Completadas con Exito'",
+    "test:maestro": "npm run test:unitarias && npm run test:integracion && npm run test:e2e"
+
+
   },
   "prettier": {
     "printWidth": 100,

@@ -26,13 +26,13 @@ export class Carrito implements OnInit {
     this.cargarCarritoDesdeBD();
   }
 
-  // 🔍 FUNCIÓN: Lee el ID directamente de donde lo guardamos en el login
+  //  FUNCIoN: Lee el ID directamente de donde lo guardamos en el login
   obtenerIdUsuarioReal(): number {
     const idString = this.appStorage.getUserId(); // Esto lee 'userId' del localStorage
     return idString ? Number(idString) : 0; 
   }
 
-  // 🚀 FUNCIÓN: Carga los datos frescos de PostgreSQL
+  //  FUNCIÓN: Carga los datos frescos de PostgreSQL
   cargarCarritoDesdeBD() {
     const idUsuario = this.obtenerIdUsuarioReal();
 
@@ -54,7 +54,7 @@ export class Carrito implements OnInit {
           img1: item.img1 
         }));
         
-        // ⚠️ ¡CLAVE PARA STRIPE! Le pasamos la lista al servicio para que Stripe sepa qué cobrar
+        //  ¡CLAVE PARA STRIPE! Le pasamos la lista al servicio para que Stripe sepa qué cobrar
         this.carritoService.setCarrito(this.listaCarrito);
 
         // Refrescamos los cálculos del total
@@ -81,8 +81,13 @@ export class Carrito implements OnInit {
     });
   }
 
-  calcularTotal(): number {
+ calcularTotal(): number {
     return this.listaCarrito.reduce((total, item) => total + (item.precio * item.cantidad), 0);
+  }
+
+  //   (Prueba PU-01)
+  calcularSubtotalItem(precio: number, cantidad: number): number {
+    return precio * cantidad; // 
   }
 
   pagarConStripe() {
@@ -91,16 +96,16 @@ export class Carrito implements OnInit {
       return;
     }
 
-    // 👉 PASO 1: Sacamos la credencial del usuario (su ID)
+    //  PASO 1: Sacamos la credencial del usuario (su ID)
     const idUsuario = this.obtenerIdUsuarioReal();
 
-    // 🛡️ Pequeña validación de seguridad por si acaso
+    //  Pequeña validación de seguridad por si acaso
     if (idUsuario === 0) {
       this.mostrarAlertaElegante('Por favor, inicia sesión para poder pagar.', 'warning');
       return;
     }
 
-    // 👉 PASO 2: Le pasamos ese ID a nuestro servicio
+    //  PASO 2: Le pasamos ese ID a nuestro servicio
     this.carritoService.procesarPagoStripe(idUsuario).subscribe({
       next: (respuesta: any) => {
         // 👀 NUESTRO ESPÍA: Vamos a ver qué nos manda realmente el backend
